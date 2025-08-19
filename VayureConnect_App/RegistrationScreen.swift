@@ -56,6 +56,18 @@ struct RegistrationScreen: View {
                         .background(Color.green)
                         .cornerRadius(15.0)
                 }
+
+                NavigationLink(destination: LoginScreen()) {
+                    Text("Back")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+//                        .padding()
+//                        .frame(width: 250, height: 50)
+//                        .background(Color.gray)
+//                        .cornerRadius(15.0)
+                }
+                .padding(.bottom, 10)
+                .padding(.top, 20.0)
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Registration Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")) {
                         if alertMessage == "Registration successful! You can now log in." {
@@ -65,6 +77,7 @@ struct RegistrationScreen: View {
                 }
             }
             .navigationBarHidden(true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.blue.opacity(0.2).ignoresSafeArea())
         }
     }

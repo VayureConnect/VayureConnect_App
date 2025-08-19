@@ -27,13 +27,26 @@ struct MyAccount: View {
                     .padding(.top, 20)
 
                 ScrollView {
-                    Text("Vayure Connect - Privacy Summary. Welcome to Vayure Connect by Vayure - Breathe Easier. We value your privacy. Here's how we handle your information: Location Data - used to show real-time air quality in your area. Air Data - collected from your device (if available) and trusted sources. Your Privacy - we do not sell your data. Shared only with trusted services or if required by law. Your Choices - disable location anytime; request or delete your data via privacy@vayure.com.au. By tapping Accept, you agree to our Privacy Policy.")
+                    Text("Vayure Connect - Privacy Summary.")
+                    Text(" ")
+                    Text("Welcome to Vayure Connect by Vayure - Breathe Easier.")
+                    Text(" ")
+
+                    Text("We value your privacy. Here's how we handle your information: Location Data - used to show real-time air quality in your area.")
+                    Text("Air Data - collected from your device (if available) and trusted sources.")
+                    Text("Your Privacy - we do not sell your data. Shared only with trusted services or if required by law.")
+                    Text("Your Choices - disable location anytime; request or delete your data via privacy@vayure.com.au.")
+                    Text("By tapping Accept, you agree to our Privacy Policy.")
+                    Text(" ")
+
                         .padding()
                 }
                 .frame(height: 200)
-                .border(Color.gray, width: 1)
+                .background(Color.white)
+                .border(Color.gray, width: 0)
                 .padding(.horizontal)
                 .padding(.bottom, 20)
+
 
                 Button(action: {
                     // Get Support action
@@ -57,6 +70,7 @@ struct MyAccount: View {
                 }
             }
             .navigationBarHidden(true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.blue.opacity(0.2).ignoresSafeArea())
         }
     }
