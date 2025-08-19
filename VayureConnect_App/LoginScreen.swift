@@ -1,0 +1,67 @@
+import SwiftUI
+
+struct LoginScreen: View {
+    @EnvironmentObject var authManager: AuthManager
+    @State private var email = ""
+    @State private var password = ""
+    @State private var showingRegistration = false
+
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Login")
+                    .font(.largeTitle)
+                    .fontWeight(.thin)
+                    .padding(.bottom, 40)
+
+                TextField("Email", text: $email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+
+                SecureField("Password", text: $password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+
+                Button(action: {
+                    if authManager.login(email: email, password: password) {
+                        // Handled by ContentView's @EnvironmentObject
+                    } else {
+                        // Show alert or error message
+                        print("Login failed")
+                    }
+                }) {
+                    Text("Login")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 200, height: 50)
+                        .background(Color.blue)
+                        .cornerRadius(15.0)
+                }
+                .padding(.bottom, 10)
+
+                Button(action: {
+                    showingRegistration = true
+                }) {
+                    Text("Sign up")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                }
+                .sheet(isPresented: $showingRegistration) {
+                    RegistrationScreen(showingRegistration: $showingRegistration)
+                }
+            }
+            .navigationBarHidden(true)
+            .background(Color.blue.opacity(0.2).ignoresSafeArea())
+        }
+    }
+}
+
+struct LoginScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginScreen()
+    }
+}
