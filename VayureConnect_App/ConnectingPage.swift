@@ -8,15 +8,6 @@ struct ConnectingPage: View {
             Text("Connecting...")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-//            NavigationLink(destination: MainDashboard()) {
-//                Text("Back")
-//                    .font(.headline)
-//                    .foregroundColor(.white)
-//                    .contentMargins(.top, 40.0)
-//                        .frame(width: 250, height: 50)
-//                        .background(Color.gray)
-//                        .cornerRadius(15.0)
-//            }
             
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
@@ -24,11 +15,12 @@ struct ConnectingPage: View {
                 Text("Press to Return")
                     .font(.headline)
                     .foregroundColor(.blue)
+                    .padding(.top, 40.0)
             }
         }
   
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.blue.opacity(0.2).ignoresSafeArea())
+        .background(Color.vayureBlue.ignoresSafeArea())
     }
 }
 

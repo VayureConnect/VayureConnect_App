@@ -1,14 +1,28 @@
 import SwiftUI
 
 struct MainDashboard: View {
+    
     var body: some View {
+        
+        
         TabView {
+            
             NavigationView {
+                
                 VStack {
-                    Text("Main Dashboard")
+                    Image("Image 1")
+                        .resizable(resizingMode: .stretch)
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Text("VAYURE CONNECT")
                         .font(.largeTitle)
                         .fontWeight(.bold)
+                        .font(.custom("Bantayog-Regular", size: 58))
+                        .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
+                        .offset(x:0, y:-90)
+
+                    //Spacer()
 
                     // Air Quality Metrics
                     Group {
@@ -18,6 +32,7 @@ struct MainDashboard: View {
                         Text("Pressure: 1012 hPa")
                         Text("Last Data Collection: Just now")
                     }
+
                     .font(.title2)
                     .padding(.bottom, 10)
 
@@ -47,7 +62,8 @@ struct MainDashboard: View {
                     Spacer()
                 }
                 .navigationBarHidden(true)
-                .background(Color.blue.opacity(0.2).ignoresSafeArea())
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.vayureBlue.ignoresSafeArea())
             }
             .tabItem {
                 Label("Dashboard", systemImage: "house.fill")

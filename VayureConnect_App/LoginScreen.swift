@@ -56,7 +56,8 @@ struct LoginScreen: View {
             }
             .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.blue.opacity(0.2).ignoresSafeArea())
+            .background(Color.vayureBlue.ignoresSafeArea())
+
         }
         
     }

@@ -38,7 +38,7 @@ struct SettingsPage: View {
                 }
             }
             .navigationBarHidden(true)
-            .background(Color.blue.opacity(0.2).ignoresSafeArea())
+            .background(Color.vayureBlue.ignoresSafeArea())
         }
     }
 }
