@@ -5,43 +5,124 @@ struct SettingsPage: View {
     @State private var allowLocation = true
     @State private var allowNotifications = true
 
-    var body: some View {
-        NavigationView {
-            VStack {
-                Text("Settings")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 40)
+    
+    
+  
+        var body: some View {
+            NavigationView {
+                ZStack {
+                    // Background
+                    Color.vayureBlue.ignoresSafeArea()
+                    
+                    VStack(spacing: 20) {
+                        
+                        // Top Banner with Cloud/Sun image and Title
+                        ZStack {
+                            Image("Image 1") // Replace with your cloud+sun asset
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 150)
+                            
+                            Text("SETTINGS")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .offset(y: 10)
+                        }
+                        
 
-                Toggle(isOn: $allowLocation) {
-                    Text("Allow Location")
-                        .font(.title2)
+                        
+                        // Air Quality Metrics Card
+                        VStack(spacing: 20 ) {
+                            HStack {
+                                Spacer()
+                                VStack {
+                                    Toggle(isOn: $allowLocation) {
+                                                    Text("Allow Location")
+                                                        .font(.title2)
+                                                }
+                                                .padding(.horizontal)
+                                                .padding(.bottom, 20)
+                                
+                                                Toggle(isOn: $allowNotifications) {
+                                                    Text("Allow Notifications")
+                                                        .font(.title2)
+                                                }
+                                                .padding(.horizontal)
+                                                .padding(.bottom, 40)
+                                
+                                                Spacer()
+                                
+                                            }
+                            }
+                        }
+                        .frame(height: 280)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(20)
+                        .shadow(radius: 5)
+                        .padding(.horizontal)
+                
+                        Spacer()
+                    }
+                    
+                    // Bottom green bar with account/settings
+                    .scrollContentBackground(.hidden)
+                    .safeAreaInset(edge: .bottom) {
+                        
+                        VStack {
+                            Spacer()
+                            ZStack {
+                                Rectangle()
+                                    
+                                    .fill(Color(red: 0.76, green: 0.96, blue: 0.61))
+                                    .frame(height: 150)
+                                
+                                HStack(){
+                                    // Connect button
+                                    
+                                    
+                                    Button(action: {
+                                        presentationMode.wrappedValue.dismiss()
+                                    }) {
+                                        Text("Press to return")
+                                            .font(.headline)
+                                            .foregroundColor(.black)
+                                            .frame(width: 380, height: 80)
+                                            .background(Color.gray.opacity(0.4))
+                                            .cornerRadius(15)
+                                           
+
+                                    }
+                                    .offset(y: -12)
+                                }
+                                
+
+                            }
+                            .offset(y: 40)
+
+                        }}
+                    
+                    // Tree overlay
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Image("tree")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 220)
+                                .padding(.trailing, 24)
+                                .offset(x:102, y: -80)
+
+                        }
+                    }
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 20)
-
-                Toggle(isOn: $allowNotifications) {
-                    Text("Allow Notifications")
-                        .font(.title2)
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 40)
-
-                Spacer()
-
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text("Press to Return")
-                        .font(.headline)
-                        .foregroundColor(.blue)
-                }
+                .navigationBarHidden(true)
             }
-            .navigationBarHidden(true)
-            .background(Color.vayureBlue.ignoresSafeArea())
         }
     }
-}
+
 
 struct SettingsPage_Previews: PreviewProvider {
     static var previews: some View {

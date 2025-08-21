@@ -4,7 +4,7 @@ import CoreLocation
 
 struct MapsPage: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -37.667783, longitude: 145.158787), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -37.667783, longitude: 145.158787), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
 
     var body: some View {
         NavigationView {

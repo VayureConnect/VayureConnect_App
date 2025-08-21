@@ -9,6 +9,22 @@ struct LoginScreen: View {
     var body: some View {
         NavigationView {
             VStack {
+                
+               
+                Image("Image 1") // Top image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+
+                Text("VAYURE CONNECT")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .font(.custom("Bantayog-Regular", size: 58))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 20)
+                    .offset(x:0, y:-90)
+
+                
+                
                 Text("Login")
                     .font(.largeTitle)
                     .fontWeight(.thin)
@@ -63,6 +79,7 @@ struct LoginScreen: View {
     }
     
 }
+
 
 struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
