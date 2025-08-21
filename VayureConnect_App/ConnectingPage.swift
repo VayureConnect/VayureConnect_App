@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ConnectingPage: View {
     @Environment(\.presentationMode) var presentationMode
+    @State private var countdown = 5
 
     var body: some View {
         VStack {
@@ -21,6 +22,22 @@ struct ConnectingPage: View {
   
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.vayureBlue.ignoresSafeArea())
+        .onAppear {
+                  startCountdown()
+              }
+    }
+//}
+
+// Countdown Logic
+    private func startCountdown() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            if countdown > 1 {
+                countdown -= 1
+            } else {
+                timer.invalidate()
+                presentationMode.wrappedValue.dismiss() // Auto return
+            }
+        }
     }
 }
 

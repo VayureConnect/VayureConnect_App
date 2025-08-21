@@ -25,10 +25,10 @@ struct LoginScreen: View {
 
                 
                 
-                Text("Login")
-                    .font(.largeTitle)
-                    .fontWeight(.thin)
-                    .padding(.bottom, 40)
+//                Text("Login")
+//                    .font(.largeTitle)
+//                    .fontWeight(.bold)
+//                    .padding(.bottom, 40)
 
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())

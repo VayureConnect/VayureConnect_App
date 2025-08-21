@@ -16,9 +16,9 @@ struct SettingsPage: View {
                     
                     VStack(spacing: 20) {
                         
-                        // Top Banner with Cloud/Sun image and Title
+                        // Top Banner
                         ZStack {
-                            Image("Image 1") // Replace with your cloud+sun asset
+                            Image("Image 1")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 150)
@@ -56,13 +56,14 @@ struct SettingsPage: View {
                                             }
                             }
                         }
-                        .frame(height: 280)
-                        .padding()
+                        .frame(width: 380, height: 280)
+                        .padding(.top, 40.0)
                         .background(Color.white)
                         .cornerRadius(20)
                         .shadow(radius: 5)
-                        .padding(.horizontal)
-                
+                        //.padding(.horizontal)
+//                        .padding()
+                        
                         Spacer()
                     }
                     
