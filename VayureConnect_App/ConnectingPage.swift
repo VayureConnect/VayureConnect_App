@@ -1,3 +1,5 @@
+// Simulate connecting to device for 5 seconds then go back to the main dashboard
+
 import SwiftUI
 
 struct ConnectingPage: View {
@@ -26,7 +28,6 @@ struct ConnectingPage: View {
                   startCountdown()
               }
     }
-//}
 
 // Countdown Logic
     private func startCountdown() {

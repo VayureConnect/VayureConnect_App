@@ -16,7 +16,7 @@ struct SettingsPage: View {
                     
                     VStack(spacing: 20) {
                         
-                        // Top Banner
+                        // Vayure Connect logo
                         ZStack {
                             Image("Image 1")
                                 .resizable()
@@ -61,9 +61,7 @@ struct SettingsPage: View {
                         .background(Color.white)
                         .cornerRadius(20)
                         .shadow(radius: 5)
-                        //.padding(.horizontal)
-//                        .padding()
-                        
+     
                         Spacer()
                     }
                     

@@ -11,7 +11,8 @@ struct LoginScreen: View {
             VStack {
                 
                
-                Image("Image 1") // Top image
+                Image("Image 1") // Vayure Connect logo
+
                     .resizable()
                     .aspectRatio(contentMode: .fit)
 
@@ -22,13 +23,6 @@ struct LoginScreen: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 20)
                     .offset(x:0, y:-90)
-
-                
-                
-//                Text("Login")
-//                    .font(.largeTitle)
-//                    .fontWeight(.bold)
-//                    .padding(.bottom, 40)
 
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())

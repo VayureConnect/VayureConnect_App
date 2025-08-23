@@ -40,14 +40,20 @@ struct MainDashboard: View {
                         HStack {
                             Spacer()
                             VStack {
-                                Image(systemName: "battery.100")
+                                Image("co2_Battery_icon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 40)
                                     .font(.largeTitle)
                                 Text("100%")
-                                    .font(.caption)
+                                    .font( .subheadline)
                             }
                             Spacer()
                             VStack {
-                                Image(systemName: "cloud.rain.fill")
+                                Image("co2_Cloud_icon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 50)
                                     .font(.largeTitle)
                                 Text("30 inHg")
                                 Text("1015.9 hPa")
@@ -55,10 +61,15 @@ struct MainDashboard: View {
                             }
                             Spacer()
                             VStack {
-                                Image(systemName: "aqi.medium") // placeholder, replace with CO icon
+                                Image("co2_Connect_icon") // placeholder, replace with CO icon
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 50)
                                     .font(.largeTitle)
+                                    
                                 Text("100 ppm")
-                                    .font(.caption)
+                                    .font( .subheadline)
+
                             }
                             Spacer()
                         }
@@ -66,7 +77,10 @@ struct MainDashboard: View {
                         HStack {
                             Spacer()
                             VStack {
-                                Image(systemName: "co2.circle")
+                                Image("co2_icon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 50)
                                     .font(.largeTitle)
                                 Text("400 ppm")
                                     .font(.caption)
