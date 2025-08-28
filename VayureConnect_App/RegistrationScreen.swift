@@ -62,27 +62,47 @@ struct RegistrationScreen: View {
                                                    .padding(.horizontal)
                                                    .padding(.bottom, 20)
                                
-                                               Button(action: {
-                                                   if password != confirmPassword {
-                                                       alertMessage = "Passwords do not match."
-                                                       showingAlert = true
-                                                   } else if UserManager.shared.registerUser(name: name, email: email, password: password) {
-                                                       alertMessage = "Registration successful! You can now log in."
-                                                       showingAlert = true
-                                                   } else {
-                                                       alertMessage = "Registration failed. Email might already be in use."
-                                                       showingAlert = true
-                                                   }
-                                               }) {
-                                                   Text("Create Account")
-                                                       .font(.headline)
-                                                       .foregroundColor(.white)
-                                                       .padding()
-                                                       .frame(width: 200, height: 50)
-                                                       .background(Color.green)
-                                                       .cornerRadius(15.0)
-                                               }
-                                  
+                                Button(action: {
+                                    let nameRegex = "^[A-Za-z ]+$"
+                                    let nameTest = NSPredicate(format:"SELF MATCHES %@", nameRegex)
+                                    
+                                    if name.isEmpty {
+                                        alertMessage = "Name must not be empty."
+                                        showingAlert = true
+                                    } else if !nameTest.evaluate(with: name) {
+                                        alertMessage = "Name must not contain numbers or special characters."
+                                        showingAlert = true
+                                    } else if email.isEmpty {
+                                        alertMessage = "Email must not be empty."
+                                        showingAlert = true
+                                    } else if password.isEmpty {
+                                        alertMessage = "Password must not be empty."
+                                        showingAlert = true
+                                    } else if password.count < 5 {
+                                        alertMessage = "Password must be at least 5 characters long."
+                                        showingAlert = true
+                                    } else if password != confirmPassword {
+                                        alertMessage = "Passwords do not match."
+                                        showingAlert = true
+                                    } else if UserManager.shared.registerUser(name: name, email: email, password: password) {
+                                        alertMessage = "Registration successful! You can now log in."
+                                        showingAlert = true
+                                    } else {
+                                        alertMessage = "Registration failed. Email might already be in use."
+                                        showingAlert = true
+                                    }
+                                }) {
+                                    Text("Create Account")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(width: 200, height: 50)
+                                        .background(Color.green)
+                                        .cornerRadius(15.0)
+                                }
+
+                                
+                                
                                                 .alert(isPresented: $showingAlert) {
                                                     Alert(title: Text("Registration Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")) {
                                                         if alertMessage == "Registration successful! You can now log in." {

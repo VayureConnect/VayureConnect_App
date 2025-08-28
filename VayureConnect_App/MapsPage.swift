@@ -2,33 +2,75 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-// Render: MapViewRepresentable
-// By default, Maps in swift only support pins and annotations, not overlays. So to show coloured areas, I need to use a UIViewRepresentable wrapper around MKMapView, as it's the only way I can access MapKit overlays.
+// MARK: - LocationGrabber (handles GPS updates)
+class LocationGrabber: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private let locationManager = CLLocationManager()
+    
+    @Published var hasCenteredOnUser = false
 
+    @Published var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: -37.567783, longitude: 145.158787),
+        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+    )
+    
+    // Circles fixed at specific coordinates this would need to call stored data from a .json payload based on the air quality
+    @Published var circles: [MKCircle] = [
+        MKCircle(center: CLLocationCoordinate2D(latitude: -37.667783, longitude: 145.158787), radius: 200),
+        MKCircle(center: CLLocationCoordinate2D(latitude: -37.666783, longitude: 145.159787), radius: 150)
+    ]
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        // We show the blue dot, but do NOT change the region automatically
+//    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        DispatchQueue.main.async {
+            // Center map only the first time
+            if !self.hasCenteredOnUser {
+                self.region.center = location.coordinate
+                self.hasCenteredOnUser = true
+            }
+            // Do NOT move the map afterwards (user can pan freely)
+        }
+    }
 
+}
+
+// MARK: - MapViewRepresentable (UIKit wrapper for MKMapView)
 struct MapViewRepresentable: UIViewRepresentable {
     @Binding var region: MKCoordinateRegion
+    var circles: [MKCircle]
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
-        mapView.setRegion(region, animated: false)
         mapView.delegate = context.coordinator
+        mapView.showsUserLocation = true
+        mapView.isZoomEnabled = true
+        mapView.isScrollEnabled = true
+        mapView.setRegion(region, animated: false)
         
-        // Create: circles with different air quality
-        let greenCircle = MKCircle(center: region.center, radius: 200) // 200m
-        mapView.addOverlay(greenCircle)
-        
-        let redCircle = MKCircle(center: CLLocationCoordinate2D(
-            latitude: region.center.latitude + 0.001,
-            longitude: region.center.longitude + 0.001),
-            radius: 150) // offset 150m radius
-        mapView.addOverlay(redCircle)
+        // Add fixed circles
+        circles.forEach { mapView.addOverlay($0) }
         
         return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        // Update region if needed (optional)
         uiView.setRegion(region, animated: true)
+        
+        // Remove old overlays and re-add fixed circles
+        uiView.overlays.forEach { uiView.removeOverlay($0) }
+        circles.forEach { uiView.addOverlay($0) }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -37,51 +79,36 @@ struct MapViewRepresentable: UIViewRepresentable {
     
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapViewRepresentable
-        init(_ parent: MapViewRepresentable) {
-            self.parent = parent
-        }
+        init(_ parent: MapViewRepresentable) { self.parent = parent }
         
-        // Render overlays with different colors
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            if let circle = overlay as? MKCircle {
-                let renderer = MKCircleRenderer(circle: circle)
-                
-                // Red colour based on radius or position but there needs to be a better way to do this in the future
-                if circle.radius == 200 {
-                    renderer.fillColor = UIColor.green.withAlphaComponent(0.3)
-                    renderer.strokeColor = UIColor.green
-                } else {
-                    renderer.fillColor = UIColor.red.withAlphaComponent(0.3)
-                    renderer.strokeColor = UIColor.red
-                }
-                
-                renderer.lineWidth = 2
-                return renderer
+            guard let circle = overlay as? MKCircle else { return MKOverlayRenderer() }
+            let renderer = MKCircleRenderer(circle: circle)
+            if circle.radius == 200 {
+                renderer.fillColor = UIColor.green.withAlphaComponent(0.3)
+                renderer.strokeColor = UIColor.green
+            } else {
+                renderer.fillColor = UIColor.red.withAlphaComponent(0.3)
+                renderer.strokeColor = UIColor.red
             }
-            return MKOverlayRenderer()
+            renderer.lineWidth = 2
+            return renderer
         }
     }
 }
 
-// Render: - MapsPage
-// To do: I need to get the GPS values from the phone and use the values to render the current location of the user
+// MARK: - MapsPage (SwiftUI View)
 struct MapsPage: View {
     @Environment(\.presentationMode) var presentationMode
-    
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: -37.667783, longitude: 145.158787),
-        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-    )
+    @StateObject private var locationGrabber = LocationGrabber()
     
     var body: some View {
         NavigationView {
             ZStack {
-                // Background
                 Color.vayureBlue.ignoresSafeArea()
                 
                 VStack(spacing: 20) {
-                    
-                    // Vayure Connect logo
+                    // Title & Logo
                     ZStack {
                         Image("Image 1")
                             .resizable()
@@ -95,9 +122,9 @@ struct MapsPage: View {
                             .offset(y: 10)
                     }
                     
-                    // Map inside card
+                    // Map
                     VStack {
-                        MapViewRepresentable(region: $region)
+                        MapViewRepresentable(region: $locationGrabber.region, circles: locationGrabber.circles)
                             .frame(height: 360)
                             .cornerRadius(15)
                         
@@ -115,42 +142,30 @@ struct MapsPage: View {
                     Spacer()
                 }
                 
-                // Bottom green bar with tree
-                .scrollContentBackground(.hidden)
+                // Bottom bar
                 .safeAreaInset(edge: .bottom) {
-                    
                     VStack {
                         Spacer()
                         ZStack {
                             Rectangle()
-                                
                                 .fill(Color(red: 0.76, green: 0.96, blue: 0.61))
                                 .frame(height: 150)
                             
-                            HStack(){
-                                // Connect button
-                                
-                                
-                                Button(action: {
-                                    presentationMode.wrappedValue.dismiss()
-                                }) {
-                                    Text("Press to return")
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                        .frame(width: 380, height: 80)
-                                        .background(Color.gray.opacity(0.4))
-                                        .cornerRadius(15)
-                                       
-
-                                }
-                                .offset(y: -12)
+                            Button(action: {
+                                presentationMode.wrappedValue.dismiss()
+                            }) {
+                                Text("Press to return")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                    .frame(width: 380, height: 80)
+                                    .background(Color.gray.opacity(0.4))
+                                    .cornerRadius(15)
                             }
-                            
-
+                            .offset(y: -12)
                         }
                         .offset(y: 40)
-
-                    }}
+                    }
+                }
                 
                 // Tree overlay
                 VStack {
@@ -162,8 +177,7 @@ struct MapsPage: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 220)
                             .padding(.trailing, 24)
-                            .offset(x:102, y: -80)
-
+                            .offset(x: 102, y: -80)
                     }
                 }
             }
@@ -172,8 +186,7 @@ struct MapsPage: View {
     }
 }
 
-
-// Render: - Preview
+// MARK: - Preview
 struct MapsPage_Previews: PreviewProvider {
     static var previews: some View {
         MapsPage()
