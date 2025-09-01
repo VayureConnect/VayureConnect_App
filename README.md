@@ -6,11 +6,11 @@ Tagline: Breathe Easier**
 
 **About the App**
 
-Vayure Connect is a prototype mobile application designed to work with the Vayure physical bio device. Together, they provide personalised air quality and wellness insights based on your location, environmental conditions, and biometric feedback.
+Vayure Connect is a prototype mobile application designed to work with the Vayure physical device. Together, they provide personalised health insights based on your location and environmental conditions.
 
 This app is currently in the prototype stage and serves as a concept demonstration of the Vayure ecosystem.
 
-The app combines location data, air quality readings, and third-party environmental sources to deliver real-time updates, forecasts, and trends. The goal is to help you make better decisions about your surroundings and wellbeing.
+The app combines locational data and air quality measurements to deliver real-time updates. The goal is to help you make better decisions about your surroundings and wellbeing.
 
 This is an early prototype, developed as a concept demonstration.
 
@@ -36,7 +36,7 @@ Built as a SwiftUI iOS prototype.
 
 Demonstrates navigation flows, splash screen, and core concept UI.
 
-Uses simulated and third-party environmental data sources.
+Uses simulated and third-party environmental data sources (Apple maps).
 
 Not yet connected to production APIs.
 
