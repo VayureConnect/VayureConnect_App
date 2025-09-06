@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MainDashboard: View {
+    @State private var showingRegistration = false
     var body: some View {
         NavigationView {
             ZStack {
@@ -142,14 +143,25 @@ struct MainDashboard: View {
                                         .background(Color.gray.opacity(0.4))
                                         .cornerRadius(15)
                                 }
+                                
                                 NavigationLink(destination: SettingsPage()) {
-                                    Text("Settings")
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                        .frame(maxWidth: .infinity, minHeight: 80)
-                                        .background(Color.gray.opacity(0.4))
-                                        .cornerRadius(15)
-                                }
+                                                                    Text("Settings")
+                                                                        .font(.headline)
+                                                                        .foregroundColor(.black)
+                                                                        .frame(maxWidth: .infinity, minHeight: 80)
+                                                                        .background(Color.gray.opacity(0.4))
+                                                                        .cornerRadius(15)
+                                                                }
+                                
+                                
+//                                NavigationLink(destination: SettingsPage(showingRegistration: $showingRegistration)) {
+//                                                                    Text("Settings")
+//                                                                        .font(.headline)
+//                                                                        .foregroundColor(.black)
+//                                                                        .frame(maxWidth: .infinity, minHeight: 80)
+//                                                                        .background(Color.gray.opacity(0.4))
+//                                                                        .cornerRadius(15)
+//                                                                }
                             }
                             .padding(.top, 20.0)
                             .padding(.bottom, 40.0)
